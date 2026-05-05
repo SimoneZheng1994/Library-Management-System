@@ -23,12 +23,12 @@ public class CustomUserServiceImpl implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(username);
+        User user = userRepository.findByEmail(userName);
 
         if (user == null) {
-            throw new UsernameNotFoundException("User with username " + username + " does not exist");
+            throw new UsernameNotFoundException("User with username " + userName + " does not exist");
         }
 
         GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().toString());
