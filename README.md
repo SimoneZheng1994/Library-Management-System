@@ -1,8 +1,8 @@
 # Library Management System
 
-## Project Objective
+## Objective
 
-To build a production-grade CRUD application following industry standards, with a focus on clean architecture and secure authentication.
+Build a production-grade CRUD application following industry standards, focusing on clean architecture through established design patterns and secure authentication.
 
 ## Tech Stack
 
