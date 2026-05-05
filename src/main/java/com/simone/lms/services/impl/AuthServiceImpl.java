@@ -85,11 +85,12 @@ public class AuthServiceImpl implements AuthService {
 
         User user = userRepository.findByEmail(userDTO.getEmail());
 
-        if (user == null) {
+        if (user != null) {
             throw new UserException("E-mail is already registered");
         }
 
         User createdUser = new User();
+        createdUser.setUserName(userDTO.getUserName());
         createdUser.setEmail(userDTO.getEmail());
         createdUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         createdUser.setPhoneNumber(userDTO.getPhoneNumber());
@@ -108,8 +109,8 @@ public class AuthServiceImpl implements AuthService {
 
         AuthResponse response = new AuthResponse();
         response.setJwt(jwt);
-        response.setTitle("Welcome " + createdUser.getFullName());
         response.setTitle("Registration successful!");
+        response.setMessage("Welcome " + savedUser.getFullName());
         response.setUserDTO(toDTO(savedUser));
 
         return response;
@@ -119,7 +120,7 @@ public class AuthServiceImpl implements AuthService {
     public void createPasswordResetToken(String email) throws UserException, MessagingException {
 
 
-        String frontendUrl = "";
+        String frontendUrl = "http://localhost:8080";
         User user = userRepository.findByEmail(email);
 
         if (user == null) {
@@ -144,7 +145,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Transactional
-    public void resetPassword(String token, String password) throws Exception {
+    public void resetPassword(String token, String newPassword) throws Exception {
         PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
                 .orElseThrow(
                         () -> new Exception("Token not valid!")
@@ -154,5 +155,10 @@ public class AuthServiceImpl implements AuthService {
             passwordResetTokenRepository.delete(resetToken);
             throw new Exception("Token expired");
         }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        passwordResetTokenRepository.delete(resetToken);
     }
 }

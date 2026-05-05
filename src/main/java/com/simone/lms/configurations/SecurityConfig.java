@@ -21,6 +21,7 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .sessionManagement(management -> management.sessionCreationPolicy(

@@ -16,6 +16,7 @@ public class UserMapper {
 
         UserDTO userDTO = new UserDTO();
 
+        userDTO.setUserName(user.getUserName());
         userDTO.setId(user.getId());
         userDTO.setEmail(user.getEmail());
         userDTO.setFullName(user.getFullName());
@@ -43,6 +44,7 @@ public class UserMapper {
 
         User createdUser = new User();
 
+        createdUser.setUserName(userDTO.getUserName());
         createdUser.setEmail(userDTO.getEmail());
         createdUser.setPassword(userDTO.getPassword());
         createdUser.setCreatedAt(LocalDateTime.now());
@@ -54,7 +56,5 @@ public class UserMapper {
         return createdUser;
 
     }
-
-
 }
 
