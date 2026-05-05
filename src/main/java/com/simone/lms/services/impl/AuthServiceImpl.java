@@ -49,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
 //        String role = authorities.iterator().next().getAuthority();
         String token = jwtProvider.generateToken(authentication);
 
-        User user = userRepository.findByEmail(userName);
+        User user = userRepository.findByUserName(userName);
 
         user.setLastLogin(LocalDateTime.now());
         userRepository.save(user);
