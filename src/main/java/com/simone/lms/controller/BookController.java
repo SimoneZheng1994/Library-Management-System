@@ -20,15 +20,7 @@ public class BookController {
 
     private final BookService bookService;
 
-    @PostMapping
-    public ResponseEntity<BookDTO> createBook(@Valid @RequestBody BookDTO bookDTO) throws BookException {
-
-        BookDTO createdBook = bookService.createBook(bookDTO);
-
-        return ResponseEntity.ok(createdBook);
-    }
-
-    @PostMapping("/bulk")
+    @PostMapping("/admin/bulk")
     public ResponseEntity<?> createBooksBulk (@Valid @RequestBody List<BookDTO> bookDTOs) throws BookException {
 
         List<BookDTO> createdBooks = bookService.createBooksBulk(bookDTOs);
@@ -52,7 +44,7 @@ public class BookController {
         return ResponseEntity.ok(bookDTO);
     }
 
-    @PutMapping("/{bookId}")
+    @PutMapping("/admin/{bookId}")
     public ResponseEntity<BookDTO> updateBook(
             @PathVariable("bookId") Long bookId,
             @Valid @RequestBody BookDTO bookDTO) throws BookException{
@@ -61,13 +53,13 @@ public class BookController {
         return ResponseEntity.ok(updatedBook);
     }
 
-    @DeleteMapping("/{bookId}")
+    @DeleteMapping("/admin/{bookId}")
     public ResponseEntity<ApiResponse> deleteBook(@PathVariable("bookId") Long id) throws BookException {
         bookService.deleteBook(id);
         return ResponseEntity.ok(new ApiResponse("Book deleted successfully", true));
     }
 
-    @DeleteMapping("/{bookId}/permanent")
+    @DeleteMapping("/admin/{bookId}/permanent")
     public ResponseEntity<ApiResponse> hardDeleteBook(@PathVariable("bookId") Long bookId) throws BookException {
         bookService.hardDeleteBook(bookId);
         return ResponseEntity.ok(new ApiResponse("Book permanently deleted", true));
