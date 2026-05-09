@@ -26,9 +26,9 @@ public class SubscriptionPlan {
     private String planCode;
 
     @Column(nullable = false, length = 100)
-    private Long name;
+    private String name;
 
-    private Long description;
+    private String description;
 
     @Column(nullable = false)
     private Integer durationInDays;

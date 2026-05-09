@@ -1,14 +1,10 @@
 package com.simone.lms.payload.dto;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,52 +16,50 @@ import java.time.LocalDateTime;
 @Builder
 public class SubscriptionPlanDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Plan code is required")
     private String planCode;
 
-    @Column(nullable = false, length = 100)
-    private Long name;
+    @NotBlank(message = "Name is required")
+    private String name;
 
-    private Long description;
+    private String description;
 
-    @Column(nullable = false)
+    @NotNull(message = "Duration is required")
+    @Positive(message = "Duration must be positive")
     private Integer durationInDays;
 
-    @Column(nullable = false)
+    @NotNull(message = "Price is required")
+    @Positive(message = "Price must be positive")
     private BigDecimal price;
 
-    private String currency = "EUR";
+    private String currency;
 
-    @Column(nullable = false)
+    @NotNull(message = "Max books allowed is required")
     @Positive(message = "Max book must be positive")
     private Integer maxBookAllowed;
 
-    @Column(nullable = false)
+    @NotNull(message = "Max days per book is required")
     @Positive(message = "Max days must be positive")
     private Integer maxDaysPerBook;
 
-    private Integer displayOrder = 0;
+    private Integer displayOrder;
 
-    private Boolean isActive = true;
+    private Boolean isActive;
 
-    private Boolean isFeatured = false;
+    private Boolean isFeatured;
 
     private String badgeText;
 
     private String adminNotes;
 
-    @CreationTimestamp
+//    private Double priceInMajorUnits;
+//    private Double monthlyEquivalentPrice;
+
     private LocalDateTime createdAt;
-
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
-
     private String createdBy;
-
     private String updatedBy;
 
 }
