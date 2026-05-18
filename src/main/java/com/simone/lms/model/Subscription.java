@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -33,10 +34,15 @@ public class Subscription {
 
     private String planCode;
 
-    private Long price;
+    private BigDecimal price;
+
+//    private String currency;
 
     @Column(nullable = false)
     private Integer maxBookAllowed;
+
+    @Column(nullable = false)
+    private Integer maxDaysPerBook;
 
     @Column(nullable = false)
     private LocalDate startDate;
@@ -47,7 +53,7 @@ public class Subscription {
     @Column(nullable = false)
     private Boolean isActive = true;
 
-    private Boolean autoReview;
+    private Boolean autoRenew;
 
     private LocalDateTime cancelledAt;
 
@@ -67,9 +73,7 @@ public class Subscription {
         if (!isActive) {
             return false;
         }
-
         LocalDate today = LocalDate.now();
-
         return !today.isBefore(startDate) && !today.isAfter(endDate);
     }
 
@@ -85,8 +89,24 @@ public class Subscription {
         return ChronoUnit.DAYS.between(LocalDate.now(), endDate);
     }
 
+    public void calculateEndDate() {
+        if (subscriptionPlan != null && startDate != null) {
+            this.endDate = startDate.plusDays(subscriptionPlan.getDurationInDays());
+        }
+    }
+
     public void initializeFromPlan() {
-        if (plan == null)
+        if (subscriptionPlan == null) {
+            this.planName = subscriptionPlan.getName();
+            this.planCode = subscriptionPlan.getPlanCode();
+            this.price = subscriptionPlan.getPrice();
+            this.maxBookAllowed = subscriptionPlan.getMaxBookAllowed();
+            this.maxDaysPerBook = subscriptionPlan.getMaxDaysPerBook();
+            if (startDate == null) {
+                this.startDate = LocalDate.now();
+            }
+            calculateEndDate();
+        }
     }
 
 }
