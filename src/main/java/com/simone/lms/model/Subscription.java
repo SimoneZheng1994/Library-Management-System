@@ -96,7 +96,7 @@ public class Subscription {
     }
 
     public void initializeFromPlan() {
-        if (subscriptionPlan == null) {
+        if (subscriptionPlan != null) {
             this.planName = subscriptionPlan.getName();
             this.planCode = subscriptionPlan.getPlanCode();
             this.price = subscriptionPlan.getPrice();
